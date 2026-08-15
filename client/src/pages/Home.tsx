@@ -11,11 +11,9 @@ interface BeforeInstallPromptEvent extends Event {
 
 // Style reminder: Neon Arcade — midnight navy, electric cyan/pink, fast tactile transitions, and phone-like card stacking.
 const ASSETS = {
-  hero: "/manus-storage/neon-arcade-hero_d9ed46c4.png",
-  mild: "/manus-storage/mild-spark_82cf511e.png",
-  hell: "/manus-storage/hell-glitch_85c56ea4.png",
-  logo: "/manus-storage/lightning-mark_2cfe5268.png",
-  bgm: "/manus-storage/balance-game-bgm_1c4a15e6.mp3",
+  logo: "/assets/logo.png",
+  bgmLobby: "/assets/bgm-lobby.mp3",
+  bgmHell: "/assets/bgm-hell.mp3",
 };
 
 const APP_VERSION = "1.0.0";
@@ -177,9 +175,11 @@ export default function Home() {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [showSettings]);
 
+  const bgmSrcFor = (m: ModeKey) => (m === "hell" ? ASSETS.bgmHell : ASSETS.bgmLobby);
+
   useEffect(() => {
     if (!audioRef.current) {
-      audioRef.current = new Audio(ASSETS.bgm);
+      audioRef.current = new Audio(bgmSrcFor(mode));
       audioRef.current.loop = true;
       audioRef.current.volume = 0.2;
     }
@@ -203,7 +203,17 @@ export default function Home() {
   const start = (nextMode: ModeKey) => {
     const nextQuestions = [...MODES[nextMode].questions].sort(() => Math.random() - 0.5);
     setMode(nextMode); setQuestions(nextQuestions); setQuestionIndex(0); setCounts({ a: 0, b: 0 }); setView("game");
-    if (audioRef.current && !muted) audioRef.current.play().catch(() => undefined);
+    const nextSrc = bgmSrcFor(nextMode);
+    if (audioRef.current) {
+      const currentSrc = audioRef.current.getAttribute("src");
+      if (currentSrc !== nextSrc) {
+        const wasPlaying = !audioRef.current.paused;
+        audioRef.current.src = nextSrc;
+        if (wasPlaying || !muted) audioRef.current.play().catch(() => undefined);
+      } else if (!muted) {
+        audioRef.current.play().catch(() => undefined);
+      }
+    }
   };
 
   const choose = (choice: "a" | "b") => {
@@ -213,7 +223,17 @@ export default function Home() {
     setCounts(nextCounts); setQuestionIndex((index) => index + 1);
   };
 
-  const reset = () => { setView("lobby"); setQuestions([]); setCounts({ a: 0, b: 0 }); };
+  const reset = () => {
+    setView("lobby"); setQuestions([]); setCounts({ a: 0, b: 0 });
+    if (audioRef.current) {
+      const lobbySrc = bgmSrcFor("mild");
+      if (audioRef.current.getAttribute("src") !== lobbySrc) {
+        const wasPlaying = !audioRef.current.paused;
+        audioRef.current.src = lobbySrc;
+        if (wasPlaying) audioRef.current.play().catch(() => undefined);
+      }
+    }
+  };
   const openQuickMenu = () => { setIsClosingMenu(false); setShowAppInfo(false); setShowSettings(true); };
   const closeQuickMenu = () => {
     if (!showSettings || isClosingMenu) return;
@@ -279,7 +299,7 @@ export default function Home() {
 
   return (
     <main className={`app-shell ${showSplash ? "is-splashing" : ""} ${soundscape === "dead-air" ? "is-dead-air" : ""}`}>
-      <div className="ambient-art" style={{ backgroundImage: `url(${ASSETS.hero})` }} />
+      <div className="ambient-art" />
       <section className="phone-frame">
         <header className="topbar">
           <button className="brand-lockup" onClick={reset} aria-label="로비로 돌아가기">
