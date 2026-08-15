@@ -1,0 +1,22 @@
+{
+  "name": "Zero-Sum · 환장의 밸런스 게임",
+  "short_name": "Zero-Sum",
+  "description": "선택 하나로 인간관계가 흔들리는 네온 밸런스 게임",
+  "lang": "ko-KR",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#070b20",
+  "background_color": "#070b20",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "/manus-storage/lightning-mark_ad30f191.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
