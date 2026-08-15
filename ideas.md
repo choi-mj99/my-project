@@ -1,7 +1,7 @@
 # 밸런스 게임 웹앱 디자인 브레인스토밍
 
 ## Approach 1
-- **Theme Name**: Neon Arcade
+- **Theme Name**: Zero-Sum
 - **Very Brief Intro**: 어두운 남색 공간 위에 전기적인 시안·핑크 포인트를 얹어, 밤에 몰래 즐기는 아케이드 게임의 긴장감과 유쾌함을 표현한다.
 - **Probability**: 0.07
 
