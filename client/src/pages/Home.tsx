@@ -69,18 +69,11 @@ const MODES: Record<ModeKey, { label: string; kicker: string; color: string; que
   ]},
 };
 
-const traitFor = (aPct: number) => {
-  const bPct = 100 - aPct;
-
-  if (aPct >= 90) return ["퓨어 네온 (Pure Neon)", "..."];
-  if (aPct >= 75) return ["일렉트릭 믹스 (Electric Mix)", "..."];
-  if (aPct >= 60) return ["오로라 스펙트럼 (Aurora Spectrum)", "..."];
-  if (aPct >= 41) return ["퍼플 글리치 (Purple Glitch)", "..."];
-  if (aPct >= 26) return ["마젠타 시프트 (Magenta Shift)", "..."];
-  if (aPct >= 11) return ["플라밍고 바이브 (Flamingo Vibe)", "..."];
-  return ["쇼킹 핑크 네온 (Shocking Pink)", "..."];
-};
-
+const traitFor = (aPct: number) => aPct >= 70
+  ? ["결단력 있는 직진형", "고민보다 선택이 빠릅니다. 일단 저지르고 나중에 합리화하는 타입." ]
+  : aPct <= 30
+    ? ["끝까지 비교하는 신중형", "최악의 상황에서도 더 나은 지옥을 찾아내는 분석가입니다."]
+    : ["양쪽 다 의심하는 균형형", "어느 한쪽에도 쉽게 휘둘리지 않는 양손잡이 멘탈입니다."];
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
@@ -332,7 +325,7 @@ export default function Home() {
           <div className="game-meta"><span className={`mode-chip ${MODES[mode].color}`}>{MODES[mode].label}</span><span><b>{questionIndex + 1}</b> / {total}</span></div>
           <div className="progress-track"><i style={{ width: `${progress}%` }} /></div>
           <div className="question-head"><span>오늘의 난제</span><h2>다음 중 하나를<br />평생 겪어야 한다면?</h2></div>
-          <div key={questionIndex} className="choice-stack">
+          <div className="choice-stack">
             <button className="choice-card choice-a" onClick={() => choose("a")}><span className="choice-top"><b>A</b><small>01</small></span><strong>{current[0]}</strong></button>
             <div className="vs-core">VS</div>
             <button className="choice-card choice-b" onClick={() => choose("b")}><span className="choice-top"><b>B</b><small>02</small></span><strong>{current[1]}</strong></button>
