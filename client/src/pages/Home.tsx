@@ -332,7 +332,7 @@ export default function Home() {
           <div className="game-meta"><span className={`mode-chip ${MODES[mode].color}`}>{MODES[mode].label}</span><span><b>{questionIndex + 1}</b> / {total}</span></div>
           <div className="progress-track"><i style={{ width: `${progress}%` }} /></div>
           <div className="question-head"><span>오늘의 난제</span><h2>다음 중 하나를<br />평생 겪어야 한다면?</h2></div>
-          <div className="choice-stack">
+          <div key={questionIndex} className="choice-stack">
             <button className="choice-card choice-a" onClick={() => choose("a")}><span className="choice-top"><b>A</b><small>01</small></span><strong>{current[0]}</strong></button>
             <div className="vs-core">VS</div>
             <button className="choice-card choice-b" onClick={() => choose("b")}><span className="choice-top"><b>B</b><small>02</small></span><strong>{current[1]}</strong></button>
